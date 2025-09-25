@@ -28,17 +28,28 @@ class AnalyzerAgent:
             self.use_ai = False
             self.console.print("⚠️  [yellow]Claude API key not provided. Analysis will be rule-based only.[/yellow]")
 
-    def analyze_repository(self, repo_info: Dict) -> Dict:
+    def analyze_repository(self, repo_info: Dict, user_preferences=None) -> Dict:
         """
         Perform comprehensive analysis of a repository
 
         Args:
             repo_info: Repository information from Scout agent
+            user_preferences: Optional user preferences (will auto-load if not provided)
 
         Returns:
             Analysis results with contribution opportunities
         """
         self.console.print(f"🔍 [bold blue]Analyzer Agent: Analyzing {repo_info['full_name']}...[/bold blue]")
+
+        # Auto-load user preferences if not provided
+        if user_preferences is None:
+            try:
+                from core.user_preferences import get_user_preferences
+                user_preferences = get_user_preferences()
+                self.console.print("📋 [dim]Loaded user preferences for analysis[/dim]")
+            except Exception as e:
+                self.console.print(f"⚠️ [yellow]Could not load user preferences: {e}[/yellow]")
+                user_preferences = None
 
         owner, name = repo_info['full_name'].split('/')
 
@@ -48,16 +59,21 @@ class AnalyzerAgent:
             'issues_analysis': self._analyze_issues(owner, name),
             'code_structure': self._analyze_code_structure(owner, name),
             'contribution_opportunities': [],
-            'health_score': 0
+            'health_score': 0,
+            'user_preferences_applied': user_preferences is not None
         }
 
-        # Identify contribution opportunities
-        analysis['contribution_opportunities'] = self._identify_opportunities(analysis)
+        # Identify contribution opportunities (with user preferences)
+        analysis['contribution_opportunities'] = self._identify_opportunities(analysis, user_preferences)
 
         # Calculate health score
         analysis['health_score'] = self._calculate_health_score(analysis)
 
-        self.console.print(f"✅ [bold green]Analysis complete for {repo_info['full_name']}[/bold green]")
+        if user_preferences:
+            self.console.print(f"✅ [bold green]Analysis complete for {repo_info['full_name']} (personalized)[/bold green]")
+        else:
+            self.console.print(f"✅ [bold green]Analysis complete for {repo_info['full_name']} (default)[/bold green]")
+
         return analysis
 
     def _analyze_readme(self, owner: str, name: str) -> Dict:
@@ -430,15 +446,18 @@ class AnalyzerAgent:
 
         for opp in opportunities:
             # Skip if user wants to avoid this type
-            if user_preferences.should_avoid_contribution(opp['type'], []):
+            if opp['type'] in user_preferences.avoid_types:
                 continue
 
             # Calculate preference score
             base_score = self._calculate_base_opportunity_score(opp)
-            user_score = user_preferences.get_contribution_score(opp['type'], base_score)
+            user_weight = user_preferences.contribution_weights.get(opp['type'], 0.5)
 
-            # Only include opportunities with reasonable scores
-            if user_score >= 0.3:  # Threshold for inclusion
+            # Combine base score with user weight
+            user_score = (base_score * 0.3) + (user_weight * 0.7)
+
+            # Only include opportunities with reasonable scores (lowered threshold)
+            if user_score >= 0.25:  # Lower threshold to allow some variety
                 opp['user_preference_score'] = user_score
                 filtered_opportunities.append(opp)
 

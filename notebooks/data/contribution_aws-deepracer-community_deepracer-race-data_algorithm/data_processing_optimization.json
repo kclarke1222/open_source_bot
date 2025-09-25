@@ -1,0 +1,27 @@
+{
+  "opportunity": {
+    "type": "performance",
+    "title": "Algorithm/Data Processing Optimization",
+    "description": "Optimize algorithms and data processing workflows",
+    "priority": "medium",
+    "effort": "high",
+    "impact": "high",
+    "technical_complexity": "high",
+    "user_preference_score": 0.6789999999999999,
+    "priority_score": 11.0
+  },
+  "repository": "aws-deepracer-community/deepracer-race-data",
+  "type": "performance",
+  "generated_content": {},
+  "pr_template": {
+    "title": "Performance: Algorithm/Data Processing Optimization",
+    "description": "## Summary\nThis PR implements algorithm/data processing optimization.\n\n## Changes Made\n- [List specific changes made]\n- [Include any breaking changes]\n- [Note any configuration updates needed]\n\n## Motivation\n[Explain why this change is needed]\n\n## Testing\n- [x] Added comprehensive tests\n- [x] Verified backward compatibility\n- [x] Tested edge cases\n\n\n\ud83e\udd16 Generated with Open Source Contributor Agent\n\nCo-Authored-By: ContributorAgent <noreply@example.com>",
+    "labels": [],
+    "reviewers": [],
+    "draft": false
+  },
+  "commit_messages": [],
+  "files_to_create": [],
+  "files_to_modify": [],
+  "implementation_notes": []
+}

@@ -34,8 +34,26 @@ class ScoutAgent:
         """
         self.console.print("🔍 [bold blue]Scout Agent: Searching for repositories...[/bold blue]")
 
+        # Auto-load user preferences if no parameters provided
+        if not languages or not min_stars:
+            try:
+                from core.user_preferences import UserPreferenceManager
+                preference_manager = UserPreferenceManager()
+                user_prefs = preference_manager.preferences
+
+                if not languages:
+                    languages = user_prefs.languages
+                if not min_stars:
+                    min_stars = user_prefs.min_stars
+
+                self.console.print("📋 [dim]Using your saved preferences for repository search[/dim]")
+
+            except Exception as e:
+                self.console.print(f"⚠️ [yellow]Could not load user preferences: {e}[/yellow]")
+                languages = languages or ['Python']
+                min_stars = min_stars or 50
+
         all_repos = []
-        languages = languages or ['Python']
 
         # Search for each language/topic combination
         for language in languages:
@@ -188,7 +206,8 @@ class ScoutAgent:
                     score += max(3 - primary_lang_index, 1)
 
             # Factor 5: Topic/keyword analysis (avoid disliked topics)
-            repo_topics = repo.get('topics', []) + [repo.get('description', '').lower()]
+            description = repo.get('description') or ''
+            repo_topics = repo.get('topics', []) + [description.lower()]
             avoid_topics = getattr(user_preferences, 'avoid_topics', set())
 
             if any(topic in ' '.join(repo_topics) for topic in avoid_topics):

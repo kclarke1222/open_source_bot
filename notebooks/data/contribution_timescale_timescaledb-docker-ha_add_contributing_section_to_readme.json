@@ -1,0 +1,39 @@
+{
+  "opportunity": {
+    "type": "documentation",
+    "priority": "medium",
+    "title": "Add contributing section to README",
+    "description": "README is missing contributing information",
+    "effort": "low",
+    "impact": "medium",
+    "priority_score": 11.0
+  },
+  "repository": "timescale/timescaledb-docker-ha",
+  "type": "documentation",
+  "generated_content": {
+    "documentation": "# Contributing to timescale/timescaledb-docker-ha\n\nThank you for your interest in contributing! This document outlines the process for contributing to this project.\n\n## Getting Started\n\n1. **Fork the repository** on GitHub\n2. **Clone your fork** locally:\n   ```bash\n   git clone https://github.com/YOUR_USERNAME/timescaledb-docker-ha.git\n   ```\n3. **Create a new branch** for your feature or bug fix:\n   ```bash\n   git checkout -b feature/your-feature-name\n   ```\n\n## Development Setup\n\n1. Install dependencies (see Installation section in README)\n2. Run tests to ensure everything works:\n   ```bash\n   # Run project-specific test command\n   python -m pytest  # or appropriate test runner\n   ```\n\n## Making Changes\n\n1. **Write tests** for your changes\n2. **Make your changes** following the project's coding style\n3. **Run tests** to ensure nothing breaks\n4. **Commit your changes** with descriptive commit messages\n\n## Pull Request Process\n\n1. **Push your changes** to your fork\n2. **Submit a pull request** with:\n   - Clear title and description\n   - Reference to any related issues\n   - List of changes made\n   - Screenshots (if UI changes)\n\n## Code Style\n\n- Follow existing code conventions\n- Use meaningful variable and function names\n- Add comments for complex logic\n- Keep functions focused and small\n\n## Questions?\n\nFeel free to open an issue for any questions about contributing!\n"
+  },
+  "pr_template": {
+    "title": "Documentation: Add contributing section to README",
+    "description": "## Summary\nThis PR adds/improves documentation for Add contributing section to README.\n\n## Changes Made\n- Added comprehensive documentation section\n- Included practical examples and code snippets\n- Followed project's documentation style and formatting\n\n## Motivation\nDocumentation was missing or incomplete, making it difficult for users to understand how to use this feature effectively.\n\n\n\ud83e\udd16 Generated with Open Source Contributor Agent\n\nCo-Authored-By: ContributorAgent <noreply@example.com>",
+    "labels": [
+      "documentation",
+      "improvement"
+    ],
+    "reviewers": [],
+    "draft": false
+  },
+  "commit_messages": [
+    "docs: add add contributing section to readme"
+  ],
+  "files_to_create": [
+    "CONTRIBUTING.md"
+  ],
+  "files_to_modify": [],
+  "implementation_notes": [
+    "Review existing documentation structure and style",
+    "Ensure consistency with project's tone and formatting",
+    "Include practical examples where appropriate",
+    "Test all code examples before submitting"
+  ]
+}

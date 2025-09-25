@@ -41,14 +41,37 @@ class StrategistAgent:
         """
         self.console.print(f"🎯 [bold blue]Strategist Agent: Planning contributions for {analysis['repository']['full_name']}...[/bold blue]")
 
-        # Set default preferences if none provided
+        # Auto-load user preferences if none provided
         if not user_preferences:
-            user_preferences = {
-                'skill_level': 'intermediate',
-                'available_time': 'medium',  # low, medium, high
-                'preferred_types': ['documentation', 'bug fixes', 'testing'],
-                'languages': ['Python', 'JavaScript']
-            }
+            try:
+                from core.user_preferences import UserPreferenceManager
+                preference_manager = UserPreferenceManager()
+                saved_prefs = preference_manager.preferences
+
+                # Convert saved preferences to strategist format
+                user_preferences = {
+                    'skill_level': saved_prefs.skill_level,
+                    'available_time': saved_prefs.available_time,
+                    'preferred_types': [
+                        contrib_type for contrib_type, weight in saved_prefs.contribution_weights.items()
+                        if weight > 0.6  # Only include types rated 6+ out of 10
+                    ],
+                    'languages': saved_prefs.languages
+                }
+
+                self.console.print("📋 [dim]Auto-loaded user preferences for strategy planning[/dim]")
+
+            except Exception as e:
+                self.console.print(f"⚠️ [yellow]Could not load user preferences: {e}[/yellow]")
+                self.console.print("[yellow]Using improved defaults (no more documentation focus!)[/yellow]")
+
+                # Better defaults than documentation-focused
+                user_preferences = {
+                    'skill_level': 'intermediate',
+                    'available_time': 'medium',
+                    'preferred_types': ['code_features', 'bug_fixes', 'performance'],
+                    'languages': ['Python', 'JavaScript']
+                }
 
         strategy = {
             'repository': analysis['repository']['full_name'],
