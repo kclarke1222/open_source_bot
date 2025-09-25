@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(python3:*)",
+      "Bash(pip install:*)",
+      "Read(//Users/kieranclarke/Library/Jupyter/kernels/open_source_bot/**)",
+      "Read(//Users/kieranclarke/Library/**)",
+      "Bash(pip3 install:*)",
+      "mcp__ide__executeCode",
+      "Bash(./venv/bin/pip install requests)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
