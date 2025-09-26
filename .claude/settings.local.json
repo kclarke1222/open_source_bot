@@ -8,7 +8,12 @@
       "Read(//Users/kieranclarke/Library/**)",
       "Bash(pip3 install:*)",
       "mcp__ide__executeCode",
-      "Bash(./venv/bin/pip install requests)"
+      "Bash(./venv/bin/pip install requests)",
+      "WebFetch(domain:github.com)",
+      "Bash(python:*)",
+      "Bash(awk:*)",
+      "Read(//private/tmp/**)",
+      "Read(//private/var/folders/**)"
     ],
     "deny": [],
     "ask": []

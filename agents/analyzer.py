@@ -206,8 +206,8 @@ class AnalyzerAgent:
             if structure_analysis['contributor_count'] < 5:
                 structure_analysis['opportunities'].append("Small contributor base - good opportunity for impact")
 
-            primary_lang = structure_analysis['primary_language'].lower()
-            if primary_lang in ['python', 'javascript', 'typescript']:
+            primary_lang = structure_analysis.get('primary_language', '') or ''
+            if primary_lang and primary_lang.lower() in ['python', 'javascript', 'typescript']:
                 structure_analysis['opportunities'].append(f"{primary_lang.title()} project - popular language")
 
             return structure_analysis
@@ -276,7 +276,8 @@ class AnalyzerAgent:
             })
 
         # API improvements
-        if 'api' in analysis['repository'].get('description', '').lower():
+        description = analysis['repository'].get('description', '') or ''
+        if 'api' in description.lower():
             opportunities.append({
                 'type': 'api_design',
                 'title': 'API Design Improvements',
@@ -350,7 +351,8 @@ class AnalyzerAgent:
     def _add_performance_opportunities(self, opportunities: List[Dict], analysis: Dict):
         """Add performance-related opportunities"""
         # For data-heavy or computation projects
-        description = analysis['repository'].get('description', '').lower()
+        repo_description = analysis['repository'].get('description', '') or ''
+        description = repo_description.lower()
         if any(keyword in description for keyword in ['data', 'ml', 'algorithm', 'compute']):
             opportunities.append({
                 'type': 'performance',
@@ -429,7 +431,7 @@ class AnalyzerAgent:
         high_impact_sections = ['installation', 'usage', 'api']
 
         for missing_section in missing_sections:
-            if missing_section.lower() in high_impact_sections:
+            if missing_section and missing_section.lower() in high_impact_sections:
                 opportunities.append({
                     'type': 'documentation',
                     'title': f'Add {missing_section} section to README',
